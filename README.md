@@ -20,5 +20,5 @@ OSX 10.9 Mavericks or later
 ## Dev-Notes
 
 * Quicklook is Sandbox-ed, so cannot create an OpenGL context in a Quicklook plugin (so no thumbnails/previews for QC compositions too)
-* I found no way to render animated content in a Quicklook plugin
-* You can use HTML data representation for some kind of media types like audio, maybe WebGL will work too, however, WebKit plugins won't work.
+* You can use HTML data representation for some kind of media types like audio, maybe WebGL will work too, however, WebKit plugins won't.
+
