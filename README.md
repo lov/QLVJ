@@ -11,7 +11,7 @@ So, this plugin won't give you back the possibility to Quicklook all kind of loo
 ## Install
 
 * Download the latest release from https://github.com/lov/QLVJ/releases
-* Drop the unzipped plugin to `~/Library/Quicklook`
+* Drop the unzipped plugin to `~/Library/QuickLook`
 
 ## System requirements
 
