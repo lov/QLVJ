@@ -4,6 +4,8 @@
 #import <Quartz/Quartz.h>
 #import <QTKit/QTKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <VideoToolbox/VideoToolbox.h>
+#import <OpenGL/CGLMacro.h>
 
 OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options);
 void CancelPreviewGeneration(void *thisInterface, QLPreviewRequestRef preview);
@@ -18,6 +20,11 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 {
     
     //
+    // Register for Professional Video Workflow decoders
+    //
+    VTRegisterProfessionalVideoWorkflowVideoDecoders();
+    
+    //
     // This plugin always executed on the main thread
     //
 
@@ -25,7 +32,8 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     
     
     // Quicktime movies
-    if ([(NSString *)contentTypeUTI isEqualToString:@"com.apple.quicktime-movie"]) {
+    if ([(NSString *)contentTypeUTI isEqualToString:@"com.apple.quicktime-movie"])
+    {
     
     
         // first of all try with AVFoundation
@@ -34,6 +42,15 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         if (asset)
         {
             AVAssetTrack *track = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+            //
+            // so at this point the AVAssetTrack will report NO for the playable property
+            // because the video using a 3rd party video codec, which cannot by handled out-of-the-box
+            // but it can be manageble with https://developer.apple.com/library/mac/technotes/tn2404/_index.html
+            // Are there any ways to force AVFoundation to use a custom decoder when calling
+            // QLPreviewRequestSetURLRepresentation(preview, url, contentTypeUTI, NULL); ?
+            //
+            //
+            
             if (track && track.playable)
             {
                 QLPreviewRequestSetURLRepresentation(preview, url, contentTypeUTI, NULL);
@@ -53,41 +70,23 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
              nil];
             
             QTMovie *movie = [[QTMovie alloc] initWithAttributes:attributes error:NULL];
-            NSImage *qtthumb = [movie posterImage]; // this is an auto-released image
             
-            NSSize canvasSize = [qtthumb size];
-            
-            CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
-            
-            if (cgContext && qtthumb) {
-                
-                NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithGraphicsPort:
-                           (void *)cgContext flipped:NO];
-                
-                if (context) {
-                    
-                    [NSGraphicsContext saveGraphicsState];
-                    [NSGraphicsContext setCurrentContext:context];
-                    
-                    [qtthumb drawInRect:NSMakeRect(0.0f, 0.0f, canvasSize.width, canvasSize.height)
-                               fromRect:NSZeroRect
-                              operation:NSCompositeCopy
-                               fraction:1.0f];
-                    
-                    [NSGraphicsContext restoreGraphicsState];
-                    
-                }
-                
-                
-                QLPreviewRequestFlushContext(preview, cgContext);
-                CFRelease(cgContext);
-            }
-            
+            // movieFormatRepresentation is better here than drawing the poster image
+            QLPreviewRequestSetDataRepresentation(preview, (CFDataRef)[movie movieFormatRepresentation], kUTTypeMovie, NULL);
+
+
             [movie release];
             movie = nil;
 
         }
         
+    } else if ([(NSString *)contentTypeUTI isEqualToString:@"com.apple.quartz-composer-composition"]) {
+
+        
+        // do nothing here, it will fallback
+        // to our thumbnail
+
+
     }
     // To complete your generator please implement the function GeneratePreviewForURL in GeneratePreviewForURL.c
     return noErr;

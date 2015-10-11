@@ -12,6 +12,7 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.quicktime-movie</string>
+				<string>com.apple.quartz-composer-composition</string>
 			</array>
 		</dict>
 	</array>

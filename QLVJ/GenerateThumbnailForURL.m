@@ -4,6 +4,7 @@
 #import <QTKit/QTKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Quartz/Quartz.h>
+#import <OpenGL/CGLMacro.h>
 
 OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thumbnail, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options, CGSize maxSize);
 void CancelThumbnailGeneration(void *thisInterface, QLThumbnailRequestRef thumbnail);
@@ -63,6 +64,72 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
         }
 
     }
+    
+    else if ([(NSString *)contentTypeUTI isEqualToString:@"com.apple.quartz-composer-composition"]) {
+        
+        QCComposition *comp = [QCComposition compositionWithFile:filePath];
+                
+      
+      //  NSLog(@"create renderer for thumbnail...");
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+        
+        QCRenderer *renderer = [[QCRenderer alloc] initOffScreenWithSize:NSSizeFromCGSize(maxSize) colorSpace:colorSpace composition:comp];
+        
+        
+        if (renderer)
+        {
+        
+            [renderer renderAtTime:0.0f arguments:nil];
+            
+            NSImage *img = [renderer snapshotImage]; // this image is autoreleased
+            
+            if (img) {
+                
+                CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&maxSize, true, NULL);
+                
+                if (cgContext) {
+                    
+                    NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithGraphicsPort:
+                                                  (void *)cgContext flipped:NO];
+                    
+                    if (context) {
+                        
+                        [NSGraphicsContext saveGraphicsState];
+                        [NSGraphicsContext setCurrentContext:context];
+                        
+                        NSRect canvasrect = NSMakeRect(0.0f, 0.0f, maxSize.width, maxSize.height);
+                        
+                        [[NSColor blackColor] setFill];
+                        NSRectFill(canvasrect);
+                        
+                        [img drawInRect:canvasrect
+                               fromRect:NSZeroRect
+                              operation:NSCompositeSourceOver
+                               fraction:1.0f];
+                        
+                        [NSGraphicsContext restoreGraphicsState];
+                        
+                    }
+                    
+                    
+                    QLThumbnailRequestFlushContext(thumbnail, cgContext);
+                    CFRelease(cgContext);
+                }
+                
+            
+            }
+            
+            [renderer release];
+         
+            
+        } else NSLog(@"renderer was nil!");
+   
+        
+
+    }
+     
+       
+
     // To complete your generator please implement the function GenerateThumbnailForURL in GenerateThumbnailForURL.c
     return noErr;
 }
