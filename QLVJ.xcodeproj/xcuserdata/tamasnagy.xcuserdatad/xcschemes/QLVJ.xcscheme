@@ -54,6 +54,14 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-c com.apple.quicktime-movie"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-c com.apple.quartz-composer-composition"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-x"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -61,16 +69,20 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-g $(BUILD_DIR)/Debug/QLVJ.qlgenerator"
+            argument = "-g &quot;$(BUILD_DIR)/Debug/QLVJ.qlgenerator&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-p &quot;/Users/tamasnagy/Desktop/asztal/testloops/HAP 1080p/DOC000 Astral Belt - HAP 1080p.mov&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-p &quot;/Users/tamasnagy/Desktop/asztal/testloops/DOC000 Astral Belt - PhotoJpeg.mov&quot;"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-t &quot;/Users/tamasnagy/Desktop/asztal/testloops/_meno_gomb.qtz&quot;"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
