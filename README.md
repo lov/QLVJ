@@ -1,8 +1,10 @@
 # QLVJ
-Quicklook plugin for generating thumbnails via Quicktime
+Quicklook plugin for generating thumbnails via Quicktime and QCRenderer API
 
 Starting from OSX 10.9 Mavericks the Quicklook service cannot generate thumbnails and previews for some movie codecs like HAP or DXV, and not even Quartz Composer files.
+
 This Quicklook plugin initiates Quicktime to generate **thumbnails**, so thumbnails will appear for HAP and DXV movies in Finder, and starting from OSX 10.11, this plugin can generate thumbnails for Quartz Composer files too. 
+
 However, generating **previews** for that kind of movies **not possible** due Quicklook limitations, so that function will show you thumnbail image instead.
 
 So, this plugin won't give you back the possibility to Quicklook all kind of loops in Finder, but it is more than nothing for now ;-)
