@@ -23,11 +23,10 @@ Sample QC files made by http://vargasz.tumblr.com and http://destroythingsbeauti
 
 ## System requirements
 
-OSX 10.9 Mavericks or later
-OSX 10.11 El Capitan required for generating QC thumnbails
+* OSX 10.9 Mavericks or later
+* OSX 10.11 El Capitan required for generating QC thumnbails (see notes below!)
 
 ## Dev-Notes
 
-* There is a bug in the Quicklook API on OSX 10.9 and 10.10 which makes impossible to create an OpenGL context in a plugin. Apple fixes this issue on OSX 10.11
-* You can use HTML data representation for some kind of media types like audio, maybe WebGL will work too, however, WebKit plugins won't.
+* There is a bug in the Quicklook API on OSX 10.9 and 10.10 which makes impossible to create an OpenGL context in a plugin. Apple fixed this issue on OSX 10.11 on some configurations, but others still won't work...
 
