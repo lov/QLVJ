@@ -10,10 +10,10 @@ However, generating **previews** for that kind of movies **not possible** due Qu
 So, this plugin won't give you back the possibility to Quicklook all kind of loops in Finder, but it is more than nothing for now ;-)
 
 ### HAP video thumbnails on OSX 10.10
-![HAP video thumbnails on OSX 10.10.](http://www.imimot.hu/images/github/hap_ql.jpg)
+![HAP video thumbnails on OSX 10.10.](http://imimot.com/images/github/hap_ql.jpg)
 
 ### QC  thumbnails on OSX 10.11
-![QC  thumbnails on OSX 10.11.](http://www.imimot.hu/images/github/qc_ql.jpg)
+![QC  thumbnails on OSX 10.11.](http://imimot.com/images/github/qc_ql.jpg)
 Sample QC files made by http://vargasz.tumblr.com and http://destroythingsbeautiful.com
 
 ## Install
